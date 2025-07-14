@@ -7,20 +7,25 @@ class ActorSerializer(serializers.ModelSerializer):
         model = Actor
         fields = ['name', 'character', 'image_url']
 
-class CommentSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(source='user.username', read_only=True)
+class CommentCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ['content']  # 작성 시는 content만 받으면 돼요
+
+
+class CommentResponseSerializer(serializers.ModelSerializer):
+    nickname = serializers.CharField(source='user.nickname', read_only=True)
 
     class Meta:
         model = Comment
-        fields = ['id', 'username', 'content', 'created_at']
+        fields = ['id', 'nickname', 'content', 'created_at'] #id - x 
 
 #영화 세부 정보 조회 시 코멘트도 함께 
 class MovieDetailSerializer(serializers.ModelSerializer): 
     comments = CommentSerializer(many=True, read_only=True)
     actors = ActorSerializer(many=True,read_only=True)
 
-
-
+    #필드 - 화면에 나타나는 순서 상관 x (프론트엔터에서 조정 가능 )
     class Meta:
         model = Movie
         fields = [

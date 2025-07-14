@@ -1,6 +1,27 @@
 import requests
 from django.http import JsonResponse
 from .models import Movie, Actor
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializers import MovieSerializer
+from rest_framework import status
+
+@api_view(['GET'])
+def movie_list(request):
+    movies = Movie.objects.all()
+    serializer = MovieSerializer(movies, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def movie_detail(request, movie_id):
+    try:
+        movie = Movie.objects.get(id=movie_id)
+    except Movie.DoesNotExist:
+        return Response({"error": "Movie not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = MovieSerializer(movie)
+    return Response(serializer.data)
+
 
 def init_db(request):
     url = "http://43.200.28.219:1313/movies/"
@@ -34,3 +55,4 @@ def init_db(request):
             )
 
     return JsonResponse({'message': '영화 데이터 저장 완료'})
+

@@ -12,6 +12,6 @@ class Comment(models.Model):
 
 
 class Rating(models.Model): #N대 N 관계 
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='ratings')
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='ratings') #N
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     score = models.IntegerField() #평점 
