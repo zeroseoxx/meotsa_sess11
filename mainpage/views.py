@@ -1,24 +1,17 @@
 from django.shortcuts import render
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from .models import Movie
-import requests
 from django.http import HttpResponse
+import requests
 
 
-# api에서 영화 데이터 가져옴
+# API에서 영화 데이터 가져오기
 def fetch_movies_from_api():
     url = "http://43.200.28.219:1313/movies/"
     response = requests.get(url)
     movies_data = response.json().get('movies', [])
     return movies_data
 
-def movie_list(request):
-    movies = fetch_movies_from_api()
-    return render(request, 'movies/movie_list.html', {'movies': movies})
 
-
-
-# 제목, 포스터 띄움
+# 외부 API 데이터를 DB에 초기 저장
 def init_db(request):
     movies = fetch_movies_from_api()
     for item in movies:
@@ -30,35 +23,47 @@ def init_db(request):
 
 
 
-# 영화 검색창 & 페이지네이션
+from django.http import JsonResponse
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from .models import Movie
+
 def movie_list(request):
-    query = request.GET.get('q')  
+    query = request.GET.get('q')
+    page = request.GET.get('page', 1)
+
     if query:
-        movies = Movie.objects.filter(title__icontains=query)  
+        movies = Movie.objects.filter(title_kor__icontains=query)
     else:
         movies = Movie.objects.all()
 
     paginator = Paginator(movies, 12)
-    page = request.GET.get('page')
-    
+
     try:
         page_obj = paginator.page(page)
     except PageNotAnInteger:
-        page = 1
-        page_obj = paginator.page(page)
+        page_obj = paginator.page(1)
     except EmptyPage:
-        page = paginator.num_pages
-        page_obj = paginator.page(page)
+        page_obj = paginator.page(paginator.num_pages)
 
+    # page_obj로 나눠진 데이터만 변환
+    data = [
+        {
+            "title_kor": movie.title_kor,
+            "poster_url": movie.poster_url
+        }
+        for movie in page_obj
+    ]
 
-    left_index = max(int(page or 1) - 2, 1)
-    right_index = min(int(page or 1) + 2, paginator.num_pages)
-    custom_range = range(left_index, right_index + 1)
-
-    context = {
-        'page_obj': page_obj,
-        'custom_range': custom_range,
-        'query': query,  
+    # 페이지 정보 포함
+    response = {
+        "movies": data,
+        "page_info": {
+            "current_page": page_obj.number,
+            "total_pages": paginator.num_pages,
+            "has_previous": page_obj.has_previous(),
+            "has_next": page_obj.has_next(),
+        }
     }
-    return render(request, 'movies/movie_list.html', context)
+
+    return JsonResponse(response)
 

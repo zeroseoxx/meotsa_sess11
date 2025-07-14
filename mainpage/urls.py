@@ -1,10 +1,12 @@
 from django.urls import path
+from .views import movie_list
 from . import views
 
 app_name = 'mainpage'
 
 urlpatterns = [
-    path('', views.movie_list, name='movie_list'),
-    # 상세 페이지 연결
-    # path('movie/<int:pk>', views.detailpage, name='detailpage'),
+    #path('', views.movie_list, name='movie_list'),
+    path('', movie_list, name='movie_list'),
+    path('init_db/', views.init_db, name='init_db'),
 ]
+
