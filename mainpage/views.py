@@ -30,7 +30,7 @@ def init_db(request):
 
 
 
-# 영화 검색창
+# 영화 검색창 & 페이지네이션
 def movie_list(request):
     query = request.GET.get('q')  
     if query:
