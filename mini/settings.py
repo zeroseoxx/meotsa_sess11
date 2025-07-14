@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'detailpage',
-    'mainpage'
+    'mainpage', #영서 
+    'movies' , #영서
 ]
 
 MIDDLEWARE = [
