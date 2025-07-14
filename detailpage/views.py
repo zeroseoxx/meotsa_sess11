@@ -1,42 +1,31 @@
-from django.shortcuts import render
-
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+import requests
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import MovieDetailSerializer
-from .serializers import CommentCreateSerializer, CommentResponseSerializer
-from movies.models import Movie
-from .models import Comment
-from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
 
+API_URL = "http://43.200.28.219:1313/movies/"
 
-#영화 세부 정보 보여주기 (1개의 영화정보/ 코멘트까지 함께 )
+# 영화 전체 목록 가져오기
+@api_view(['GET'])
+def movie_list(request):
+    response = requests.get(API_URL)
+    if response.status_code != 200:
+        return Response({"error": "영화 데이터를 가져오지 못했습니다."}, status=500)
+
+    movies = response.json().get('movies', [])
+    return Response(movies)
+
+# 영화 상세 정보 가져오기
 @api_view(['GET'])
 def movie_detail(request, movie_id):
-    movie = Movie.objects.get(movie_id=movie_id)
-    serializer = MovieDetailSerializer(movie)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    response = requests.get(API_URL)
+    if response.status_code != 200:
+        return Response({"error": "영화 데이터를 가져오지 못했습니다."}, status=500)
 
-#영화 코멘트 작성 
-@api_view(['POST'])
-@authentication_classes([JWTAuthentication])
-@permission_classes([IsAuthenticated])
-def comment_create(request, movie_id):
+    movies = response.json().get('movies', [])
     try:
-        movie = Movie.objects.get(id=movie_id)
-    except Movie.DoesNotExist:
-        return Response({"error": "영화를 찾을 수 없습니다."}, status=status.HTTP_404_NOT_FOUND)
+        movie = movies[movie_id - 1]  # 주의: movie_id는 1부터 시작한다고 가정
+    except IndexError:
+        return Response({"error": "해당 영화가 존재하지 않습니다."}, status=404)
 
-    serializer = CommentCreateSerializer(data=request.data)
-    if serializer.is_valid():
-        comment = serializer.save(user=request.user, movie=movie)
-        response_serializer = CommentResponseSerializer(comment)
-        return Response(response_serializer.data, status=status.HTTP_201_CREATED)
-    
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-#평점 작성 
+    return Response(movie)
