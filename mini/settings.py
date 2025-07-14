@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'rest_framework_simplejwt',
-    'allauth.socialaccount',
+    'allauth.socialaccount', 
+    'movies' , #영서
 ]
 
 MIDDLEWARE = [

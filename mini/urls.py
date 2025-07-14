@@ -24,4 +24,7 @@ urlpatterns = [
     path('dj/', include('dj_rest_auth.urls')), #sujin
     path('dj/registration/', include('dj_rest_auth.registration.urls')),
     path('mainpage/', include('mainpage.urls')),
+    path('movies/',include('movies.urls')),
+    path('detailpage/',include('detailpage.urls')),
 ]
+
