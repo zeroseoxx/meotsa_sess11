@@ -16,10 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from mainpage.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),#sujin
     path('dj/', include('dj_rest_auth.urls')), #sujin
-    path('dj/registration/', include('dj_rest_auth.registration.urls')), #sujin
+    path('dj/registration/', include('dj_rest_auth.registration.urls')),
+    path('mainpage/', include('mainpage.urls')),
 ]
