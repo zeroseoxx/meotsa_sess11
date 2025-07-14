@@ -7,7 +7,7 @@ class Movie(models.Model):
     title_eng = models.CharField(max_length=255)
     poster_url = models.URLField()
     genre = models.CharField(max_length=255)
-    showtime = models.IntegerField(max_length=50)
+    showtime = models.IntegerField() #수정 
     release_date = models.DateField(null=True, blank=True)  # 2023-08-18
     plot = models.TextField()
     director_name = models.CharField(max_length=255)
