@@ -27,15 +27,15 @@ from django.http import JsonResponse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from .models import Movie
 
+
 def movie_list(request):
-    query = request.GET.get('q')
-    page = request.GET.get('page', 1)
+    query = request.GET.get('q', '')  # 검색어 기본값 빈 문자열
+    page = request.GET.get('page', 1)  # 기본값 1페이지
 
-    if query:
-        movies = Movie.objects.filter(title_kor__icontains=query)
-    else:
-        movies = Movie.objects.all()
+    # 검색어 포함된 영화만 필터링
+    movies = Movie.objects.filter(title_kor__icontains=query)
 
+    # 페이지네이션 설정
     paginator = Paginator(movies, 12)
 
     try:
@@ -45,7 +45,6 @@ def movie_list(request):
     except EmptyPage:
         page_obj = paginator.page(paginator.num_pages)
 
-    # page_obj로 나눠진 데이터만 변환
     data = [
         {
             "title_kor": movie.title_kor,
@@ -62,8 +61,8 @@ def movie_list(request):
             "total_pages": paginator.num_pages,
             "has_previous": page_obj.has_previous(),
             "has_next": page_obj.has_next(),
-        }
+        },
+        "query": query  # 현재 검색어도 응답에 포함
     }
 
     return JsonResponse(response)
-
