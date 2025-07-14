@@ -22,7 +22,7 @@ class CommentResponseSerializer(serializers.ModelSerializer):
 
 #영화 세부 정보 조회 시 코멘트도 함께 
 class MovieDetailSerializer(serializers.ModelSerializer): 
-    comments = CommentSerializer(many=True, read_only=True)
+    comments = CommentResponseSerializer(many=True, read_only=True)
     actors = ActorSerializer(many=True,read_only=True)
 
     #필드 - 화면에 나타나는 순서 상관 x (프론트엔터에서 조정 가능 )

@@ -8,6 +8,9 @@ from .serializers import MovieDetailSerializer
 from .serializers import CommentCreateSerializer, CommentResponseSerializer
 from movies.models import Movie
 from .models import Comment
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 
 
 #영화 세부 정보 보여주기 (1개의 영화정보/ 코멘트까지 함께 )
@@ -19,6 +22,7 @@ def movie_detail(request, movie_id):
 
 #영화 코멘트 작성 
 @api_view(['POST'])
+@authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def comment_create(request, movie_id):
     try:
