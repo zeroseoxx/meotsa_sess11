@@ -181,9 +181,7 @@ REST_FRAMEWORK = {
 from datetime import timedelta
 
 ACCOUNT_EMAIL_VERIFICATION = 'none'
-#ACCOUNT_EMAIL_REQUIRED = False
-ACCOUNT_SIGNUP_FIELDS = ['email', 'username*', 'password1*', 'password2*']
-
+ACCOUNT_EMAIL_REQUIRED = False
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=1), # 액세스 토큰의 유효기간
