@@ -5,6 +5,8 @@ from rest_framework import serializers
 class CustomRegisterSerializer(RegisterSerializer):
     nickname = serializers.CharField(max_length=100)
 
+    _has_phone_field = False
+
     def get_cleaned_data(self):
         super(CustomRegisterSerializer, self).get_cleaned_data()
         return {
