@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'rest_framework_simplejwt',
-    'allauth.socialaccount',
+    'allauth.socialaccount', 
+    'movies' , #영서
 ]
 
 MIDDLEWARE = [
@@ -61,6 +62,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     ##수진
     'allauth.account.middleware.AccountMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'mini.urls'
