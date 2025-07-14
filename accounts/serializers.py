@@ -31,4 +31,4 @@ from .models import CustomUser
 class CustomUserDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'password', 'nickname']
+        fields = ['id', 'username', 'nickname'] #password는 제외시킴

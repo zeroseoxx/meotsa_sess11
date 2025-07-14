@@ -5,15 +5,16 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
 # Create your views here.
-'''
-def signup(request):
-    if request.method == 'POST':
-        if request.POST['password1'] == request.POST['password2']:
-            user = User.objects.create_user(
-                                            username=request.POST['username'],
-                                            password=request.POST['password1'],
-                                            email=request.POST['email'],)
-            auth.login(request, user)
-            return redirect('/')
-        return render(request, 'signup.html') #회원가입 페이지
-    return render(request, 'signup.html')'''
+# accounts/views.py
+
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from .serializers import CustomUserDetailSerializer
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])  # 로그인한 사용자만 접근 가능
+def user_detail(request):
+    user = request.user
+    serializer = CustomUserDetailSerializer(user)
+    return Response(serializer.data)
