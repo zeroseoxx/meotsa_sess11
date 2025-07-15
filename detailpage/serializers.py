@@ -13,7 +13,7 @@ class CommentResponseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ['id', 'nickname', 'content', 'created_at'] #id - x 
+        fields = ['id', 'nickname', 'content', 'created_at'] #id - x #여기서 id는 Comment 식별용, 유저 식별이 아님 
 
 # class ActorSerializer(serializers.ModelSerializer):
 #     class Meta:

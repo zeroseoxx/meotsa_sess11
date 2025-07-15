@@ -15,6 +15,6 @@ from .views import movie_detail,comment_create
 urlpatterns = [
     #path('', movie_list, name='movie_list'),
     path('<int:movie_id>/', movie_detail, name='movie_detail'), #영화 세부정보 url 
-    path('<int:movie_id>/comments/create', comment_create, name='comment_create') #코멘트 작성 url 
+    path('<int:movie_id>/comments/create', comment_create, name='comment_create'), #코멘트 작성 url 
 
 ]
