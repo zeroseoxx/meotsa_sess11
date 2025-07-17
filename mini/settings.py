@@ -42,7 +42,7 @@ SECRET_KEY = 'django-insecure-t2ci#r-^vu2_=orbk#ltc9te4*5uhw%t=o&u+d!9o5@+o8e7sx
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False 
 
-ALLOWED_HOSTS = ['127.0.0.1', '3.105.143.58', 'limjaejun.shop']
+ALLOWED_HOSTS = ['127.0.0.1', '52.62.131.34', 'minihack04.shop']
 
 
 # Application definition
