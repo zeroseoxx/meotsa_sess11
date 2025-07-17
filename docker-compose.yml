@@ -1,9 +1,9 @@
 version: '3'
 services:
   web:
-    image: minilion_app
-    container_name: mini_web
-    command: bash -c "gunicorn mini.wsgi:application -b 0.0.0.0:8000" # 서버 실행
+    image: server
+    container_name: new_web
+    command: bash -c "gunicorn BE.wsgi:application -b 0.0.0.0:8000" # 서버 실행
     ports:
       - "8000:8000"
     restart: always
