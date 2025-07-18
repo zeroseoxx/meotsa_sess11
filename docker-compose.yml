@@ -13,8 +13,7 @@ services:
       - ./media:/app/media # media가 있으면
     networks:
       - server
-    command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
-
+  
 
   nginx:
     image: nginx:latest
@@ -33,6 +32,8 @@ services:
       - web
     networks:
       - server
+    command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
+
   # 이 밑은 전부 다 (들여쓰기 유의! certbot은 맨 위의 nginx와 같은 깊이의 들여쓰기가 되어야 합니다!)
   certbot:
     image: certbot/certbot
